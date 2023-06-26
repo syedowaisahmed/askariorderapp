@@ -44,6 +44,8 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const productId = req.params.id;
   const updatedProductData = req.body;
+  console.log('product updated');
+  console.log(updatedProductData);
   try {
     const product = await Product.findByIdAndUpdate(productId, updatedProductData, { new: true });
     if (!product) {
