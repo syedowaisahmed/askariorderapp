@@ -1,0 +1,52 @@
+<div class="flex justify-center items-center h-screen">
+  <form class="w-64 p-4 rounded-lg shadow-lg" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <h2 class="text-2xl font-bold mb-6">Sign Up</h2>
+    <mat-form-field class="w-full">
+      <mat-label>First Name</mat-label>
+      <input matInput placeholder="Enter your first name" formControlName="firstname">
+      <mat-error *ngIf="registrationForm.get('firstname')?.invalid && registrationForm.get('firstname')?.touched">
+        First name is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Last Name</mat-label>
+      <input matInput placeholder="Enter your last name" formControlName="lastname" required>
+      <mat-error *ngIf="registrationForm.get('lastname')?.invalid && registrationForm.get('lastname')?.touched">
+        Last name is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Username</mat-label>
+      <input matInput placeholder="Enter your username" formControlName="username" required>
+      <mat-error *ngIf="registrationForm.get('username')?.invalid && registrationForm.get('username')?.touched">
+        Username is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" placeholder="Enter your email" formControlName="email" required email>
+      <mat-error *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched">
+        <div *ngIf="registrationForm.get('email')?.hasError('required')">Email is required.</div>
+        <div *ngIf="registrationForm.get('email')?.hasError('email')">Invalid email format.</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" placeholder="Enter your password" formControlName="password" required minlength="8">
+      <mat-error *ngIf="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched">
+        <div *ngIf="registrationForm.get('password')?.hasError('required')">Password is required.</div>
+        <div *ngIf="registrationForm.get('password')?.hasError('minlength')">Password must be at least 8 characters long.</div>
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="w-full mt-6" [disabled]="registrationForm?.invalid">Signup</button>
+    <p class="text-red-500" *ngIf="registrationError">{{ registrationError }}</p>
+    <div class="flex justify-end mt-4">
+      <a routerLink="/users/login" class="text-blue-500">Login</a>
+    </div>
+  </form>
+</div>
