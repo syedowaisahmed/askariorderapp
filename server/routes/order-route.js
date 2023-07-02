@@ -13,6 +13,43 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/summary', async (req, res) => {
+  try {
+    const summary = await Order.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalOrdersCount: { 
+            $sum: 1 
+          },
+          pendingOrders: {
+            $sum: {
+              $cond: { if: { $eq: ['$orderStatus', 'pending'] }, then: 1, else: 0 }
+            }
+          },
+          completedOrders: {
+            $sum: {
+              $cond: { if: { $eq: ['$orderStatus', 'completed'] }, then: 1, else: 0 }
+            }
+          },
+          totalAmount: { $sum: '$totalAmount' }
+        }
+      }
+    ]);
+
+    if (summary.length > 0) {
+      const orderSummary = summary[0];
+      res.json(orderSummary);
+    } else {
+      // No orders found, handle this case
+      res.status(404).json({ message: 'No orders found' });
+    }
+  } catch (error) {
+    console.error('Error retrieving order summary:', error);
+    res.status(500).json({ message: 'Error retrieving order summary' });
+  }
+});
+
 // GET a specific order by ID
 router.get('/:id', async (req, res) => {
   const orderId = req.params.id;
