@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>New Product</h2>
+<mat-dialog-content>
+  <form [formGroup]="newForm">
+    <mat-form-field>
+      <input matInput placeholder="Name" formControlName="name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Price" formControlName="price">
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput placeholder="Description" formControlName="description"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="createProduct()" [mat-dialog-close]="newForm.value" [disabled]="newForm.invalid">Create</button>
+  <button mat-button (click)="closeDialog()">Cancel</button>
+</mat-dialog-actions>

@@ -1,0 +1,91 @@
+<mat-toolbar color="primary" class="max-w-9xl max-auto border-x justify-between">
+  <div>
+    <a routerLink="/home">
+      <img src="/assets/images/logo.png" alt="Order App Logo" class="rounded-full h-12 w-12 inline">
+    </a>
+    <span class="ml-2">ASKARI ORDERING APP</span>
+  </div>
+  <div *ngIf="this.authService.isLoggedIn" class="search-box bg-white rounded-md w-1/2 text-center h-8">
+    <mat-form-field appearance="outline" class="w-full">
+      <input matInput type="text" placeholder="Search..." class="w-full" />
+    </mat-form-field>
+  </div>
+  <div class="cart-panel">
+    <button mat-icon-button class="bg-rose-600 text-white rounded-full" [matMenuTriggerFor]="newProductArrived">
+      <mat-icon *ngIf="this.product"
+        [matBadge]="1"
+        matBadgeColor="primary"
+      >notifications</mat-icon>
+      <mat-icon *ngIf="!this.product">notifications</mat-icon>
+    </button>
+    <mat-menu #newProductArrived="matMenu">
+      <div class="flex flex-col m-4 bg-green-200">
+        <div class="flex">
+          <div class="font-bold mr-3">Product Name</div>
+          <div class="font-purple-500">{{product?.name}}</div>
+        </div>
+        <div class="flex">
+          <div class="font-bold mr-3">Product Price</div>
+          <div class="font-purple-500">{{product?.price}}</div>
+        </div>
+      </div>
+    </mat-menu>
+    <button *ngIf="this.authService.isLoggedIn && !this.authService.isAdmin" mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon *ngIf="(cartService.Cart | async)?.items?.length > 0"
+        [matBadge]="(cartService.Cart | async)?.items?.length"
+        matBadgeColor="warn"
+      >shopping_cart</mat-icon>
+      <mat-icon *ngIf="(cartService.Cart | async)?.items?.length <= 0">shopping_cart</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <div class="p-3 divide-y divide-solid w-full">
+        <div class="pb-2 flex justify-between font-bold text-purple-700">
+          <span class="mr-8">{{(cartService.Cart | async)?.items?.length }} Items</span>
+          <span class="mr-8">Price</span>
+          <span class="mr-8">Qty.</span>
+          <span class="mr-8">Total</span>
+          <a routerLink="/view-cart">View Chart</a>
+        </div>
+        <div class="mt-2 py-2 divide-y divide-dotted font-semibold">
+          <div class="mb-2 flex justify-between" *ngFor="let item of (cartService.Cart | async)?.items">
+            <span class="mr-8">{{item.productName}}</span>
+            <span class="mr-8">{{item.basePrice}}</span>
+            <span class="mr-8">{{item.qty}} Kg</span>
+            <span class="mr-8">{{item.totalAmount | currency }}</span>
+            <button mat-icon-button (click)="this.cartService.removeFromCart(item)" class="text-red-500">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="flex justify-between py-3 font-bold text-green-500">
+          <span>Total: </span>
+          <span>{{ (cartService.Cart | async)?.totalAmount | currency}}</span>
+        </div>
+        <div class="pt-3 flex justify-between">
+          <button mat-icon-button class="bg-rose-600 text-white rounded-full">
+            <mat-icon>remove_shopping_cart</mat-icon>
+          </button>
+          <button routerLink="/view-cart" mat-icon-button class="bg-green-600 text-white rounded-full">
+            <mat-icon>remove_shopping_cart</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-menu>
+  </div>
+  <div>
+    <button *ngIf="!this.authService.isLoggedIn" mat-button routerLink="/users/signup">Sign Up</button>
+    <button *ngIf="!this.authService.isLoggedIn" mat-button routerLink="/users/login">Login</button>
+    <span>{{this.authService.username}}</span>
+    <button *ngIf="this.authService.isLoggedIn" mat-icon-button [matMenuTriggerFor]="auth">
+      <mat-icon>person</mat-icon>
+    </button>
+    <mat-menu #auth="matMenu">
+      <div class="p-3">
+        <div class="font-300 font-green-400 mb-2">{{this.authService.userEmail}}</div>
+        <div>
+          <a class="font-300 font-green-400" *ngIf="this.authService.isLoggedIn" (click)="this.authService.logout()">Logout</a>
+        </div>
+      </div>
+    </mat-menu>
+  </div>
+</mat-toolbar>

@@ -1,0 +1,31 @@
+<div class="flex justify-center items-center h-screen">
+  <form [formGroup]="loginForm" (ngSubmit)="login()" class="w-64 p-4 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold mb-6">Login</h2>
+    <mat-form-field class="w-full">
+      <input matInput type="email" id="email" formControlName="email" placeholder="email">
+      <mat-error *ngIf="loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)">
+        <span *ngIf="loginForm.controls['email']?.errors?.['required']">
+          Email is required.
+        </span>
+        <span *ngIf="loginForm.controls['email']?.errors?.['email']">
+          Please enter a valid email address.
+        </span>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-full mt-4">
+      <input matInput type="password" id="password" placeholder="password" formControlName="password">
+      <mat-error *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)">
+        <span *ngIf="loginForm.controls['password']?.errors?.['required']">
+          Password is required.
+        </span>
+      </mat-error>
+    </mat-form-field>
+
+    <button type="submit" mat-raised-button color="primary" class="w-full mt-6" [disabled]="loginForm.invalid">Login</button>
+    <p class="text-red-500" *ngIf="loginError">{{ loginError }}</p>
+    <div class="flex justify-between mt-4">
+      <a routerLink="/users/signup" class="text-blue-500">Sign Up</a>
+      <a routerLink="/users/forgot-password" class="text-blue-500">Forgot Password</a>
+    </div>
+  </form>
+</div>
