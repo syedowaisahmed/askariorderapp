@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  STRIPE_PUBLIC_KEY: 'pk_test_51KDcnYDmkHIWBarETOmoWIkDvD9iGXR2teANRNSKcOzSzNMz4Fw9AJmO1LzFn4unNorr8ogbEGXrkahBNdMVWRNU00Meqc0kLH'
+  STRIPE_PUBLIC_KEY: ''
 };
 
 /*
