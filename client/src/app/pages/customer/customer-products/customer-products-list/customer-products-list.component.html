@@ -1,0 +1,80 @@
+<div class="flex">
+  <!-- Side Filters -->
+  <div class="p-4 bg-white rounded shadow">
+    <h3 class="text-lg font-semibold text-purple-500">Filters</h3>
+    <div class="mt-4">
+      <mat-form-field class="w-full">
+        <mat-label>Price Range</mat-label>
+        <input matInput type="number" placeholder="Min Price" class="bg-purple-100 border border-purple-200 rounded p-2">
+      </mat-form-field>
+    </div>
+    <div class="mt-4">
+      <mat-form-field class="w-full">
+        <mat-label>Date Range</mat-label>
+        <input matInput [matDatepicker]="picker" placeholder="Select Date" class="bg-purple-100 border border-purple-200 rounded p-2">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="mt-4">
+      <mat-form-field class="w-full">
+        <mat-label>Product Status</mat-label>
+        <mat-select [(ngModel)]="selectedStatus" class="bg-purple-100 border border-purple-200 rounded p-2">
+          <mat-option *ngFor="let status of productStatuses" [value]="status">{{ status }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="mt-4">
+      <mat-checkbox class="text-purple-500">Active Only</mat-checkbox>
+    </div>
+    <div class="mt-4">
+      <button mat-raised-button color="primary" class="bg-purple-500 hover:bg-purple-600 text-white">Apply Filters</button>
+    </div>
+  </div>
+
+  <!-- Product Listing -->
+  <div class="w-4/5 bg-white p-2">
+    <mat-toolbar class="bg-purple-100">
+      <!-- Sorting options and view options here -->
+      <button mat-icon-button>
+        <mat-icon>view_list</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>view_module</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>view_comfy</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <!-- Product Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 py-2">
+      <mat-card *ngFor="let product of filteredProducts" class="bg-purple-50">
+        <mat-card-header class="text-center">
+          <div class="text-xl font-bold w-full">{{product.name}}</div>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="mb-2">
+            <img [style.height.px]="150" [style.width.px]="220" [src]="'/assets/images/' + product.picture" alt="Product Image" class="w-full h-auto">
+          </div>
+          <div class="flex justify-between"><div>Product Price:</div><div class="font-bold">{{ product.price }}</div></div>
+          <div class="flex justify-between"><div>Product Status:</div><div class="font-bold">{{ product.status || 'Out of Stock' }}</div></div>
+          <hr class="pl-2 pr-2 mb-2 font-green-500">
+          <p>{{ product.description }}</p>
+          <!-- Add other product details here -->
+        </mat-card-content>
+        <hr class="pl-2 pr-2 font-green-500">
+        <mat-card-actions class="bg-yellow-300">
+          <div class="flex p-2">
+            <button mat-raised-button color="primary" class="border-red-500" (click)="addToCart(product)">Add to Cart</button>
+            <a mat-button color="primary" class="border-red-500" [routerLink]="['/products', product.id]">View Detail</a>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Pagination -->
+    <mat-paginator [length]="filteredProducts.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" class="bg-purple-50 text-bold pl-4">
+    </mat-paginator>
+  </div>
+</div>
